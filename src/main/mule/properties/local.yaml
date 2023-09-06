@@ -1,0 +1,12 @@
+http:
+  host: "localhost"
+  port: "8081"
+ 
+db:
+  host: "localhost"
+  port: "3306"
+  user: "root"
+  password: "admin"
+  database: "orderdetails"  
+headers:
+  id: "Lateef@2001"   

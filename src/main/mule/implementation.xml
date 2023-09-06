@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="get_shipmentDetails_implementationSub_Flow" doc:id="92be17ab-d006-4eb1-bd47-e3695832f4b5" >
+		<flow-ref doc:name="get_shipmentDetails_mySQLDataBaseSub_Flow" doc:id="6010562e-70c3-4723-89eb-8e2e8e6d0559" name="get_shipmentDetails_mySQLDataBaseSub_Flow"/>
+		<ee:transform doc:name="mapping" doc:id="0f1d71ba-9cbd-4934-8b05-fd8d68a5ce5e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+(vars.region):payload map((item,index)->
+{
+
+	"country": item.Country,
+	"itemType": item.Itemtype,
+	"orderDate": item.Orderdate,
+	"shipDate": item.Shipdate,
+	"price": item.Price
+})]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="get_sameDateDetails_implementationSub_Flow" doc:id="abdf9337-c9ce-47d4-9c73-e1109085eab0" >
+		<flow-ref doc:name="retreive_sameDateDetails_mySQLDataBaseSub_Flow" doc:id="78a25516-cc4a-4e45-978b-088d4ae6a6a7" name="retreive_sameDateDetails_mySQLDataBaseSub_Flow"/>
+		<ee:transform doc:name="mapping" doc:id="861a94f3-02c1-4cd9-b852-c3b4b5a9a690" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item,index) -> item.Orderdate == item.Shipdate) map((item,index) -> {
+	"country": item.Country,
+	"itemType": item.Itemtype,
+	"orderId": item.Orderid,
+	"orderDate": item.Orderdate,
+	"shipDate": item.Shipdate,
+	"price": item.Price	
+	
+}
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

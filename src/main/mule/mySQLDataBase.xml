@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	
+	
+	<sub-flow name="get_shipmentDetails_mySQLDataBaseSub_Flow" doc:id="14c6161e-03a7-4c83-8208-eaaec0070b12" >
+		<db:select doc:name="retreieveShipmentDetailsBaedOnInput" doc:id="d35f5a90-3339-40ef-8f85-2e1f17cee10d" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from countryorder where Region =:region]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	region: vars.region
+}]]]></db:input-parameters>
+		</db:select>
+	</sub-flow>
+	<sub-flow name="retreive_sameDateDetails_mySQLDataBaseSub_Flow" doc:id="aac4547b-486e-412a-9f6c-b66e8574e57a" >
+		<db:select doc:name="retreiveSameOrderDate&amp;ShipDateRecords" doc:id="20521473-5e46-4b94-a64d-c4ca540dacaf" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from countryorder]]></db:sql>
+		</db:select>
+	</sub-flow>
+</mule>
